@@ -9,7 +9,6 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 void main() => runApp(const MyApp());
 
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
             title: const Text("demonstração de estrutura Pai dentro de um Scaffold")
           ),
         ),
-        title: const Text("deonstração de estrutura Pai fora do Scaffold"),
+        //title: const Text("deonstração de estrutura Pai fora do Scaffold"),
     );
   }
 

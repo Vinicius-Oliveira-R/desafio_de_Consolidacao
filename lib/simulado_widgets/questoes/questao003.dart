@@ -5,9 +5,7 @@
 // um widget como text pode existir sem estrutura PAI, já um widget como AppBar nescessita da estrutura para funcionar
 
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/simulado_widgets/questoes/quetao002.dart';
 
 // void main(){
 //   runApp(const Center(
