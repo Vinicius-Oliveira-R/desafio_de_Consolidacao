@@ -1,7 +1,7 @@
 // //Estrutura e Layout
 // //Quando o widget "X" é posicionado dentro de widgets como Column ou Row, quais cuidados de layout e alinhamento devem ser observados?
 // //Explique e demonstre com código um cenário de erro e outro corrigido.
-
+// Os cuidados que devemos ter com o posicionamento de Column e Row dentro de widgets, é sua expansão infinita, se nós não definirmos um limite utilizando EXPANDED alguns widgets como ListView atribuem um tamanha infinito  
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
