@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
             ),
 
             child: const Center(
-              child: Text(
+              child: Text( 
                 "Exemplo de personalização",
                 style: TextStyle(color: Colors.white, fontSize: 30),
               ),
