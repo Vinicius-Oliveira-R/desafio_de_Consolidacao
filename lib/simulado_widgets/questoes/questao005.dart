@@ -16,13 +16,18 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         body: Center(
           child: Container(
-            width: 150,
-            height: 150,
-            color: Colors.blue,
+            width: 500,
+            height: 500,
+            decoration: BoxDecoration(
+              color: Colors.blue,
+              border: Border.all(color: Colors.pink, width: 4),
+              borderRadius: BorderRadius.circular(13),
+            ),
+
             child: const Center(
               child: Text(
                 "Exemplo de personalização",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: Colors.white, fontSize: 30),
               ),
             ),
           ),
