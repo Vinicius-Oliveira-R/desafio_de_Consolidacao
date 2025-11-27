@@ -32,10 +32,6 @@ class TextQuestao001App extends StatelessWidget {
 // Quais benefícios ele traria em relação à interação, comportamento dinâmico ou atualização visual?  
 // **Implemente um exemplo funcional do que citou.**
 
-class TextQuestao002 {
-  String exemplo() => "Exemplo com Text dentro de StatefulWidget.";
-}
-
 // ### Independência e Renderização  
 // O widget `"X"` pode **existir isoladamente**, sem depender de outro widget estrutural?  
 // Explique **por que sim ou não**, e apresente um exemplo funcional **com e sem contêiner pai**.
