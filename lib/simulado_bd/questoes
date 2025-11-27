@@ -1,0 +1,126 @@
+Simulado 2 — Formulário Stateless (respostas)
+
+
+## 1. BuildContext
+- `BuildContext` é o identificador que referencia a localização de um widget na árvore. Permite acessar temas, localizações, navegação e encontrar widgets ancestrais (via `Theme.of(context)` ou `Navigator.of(context)`).
+
+
+## 2. GlobalKey<FormState>
+- `GlobalKey<FormState>` permite acessar o estado do `Form` de fora do próprio `Form` (por exemplo para validar/submit). Exemplo de uso:
+
+
+```dart
+final _formKey = GlobalKey<FormState>();
+Form(
+key: _formKey,
+child: ...
+);
+// validar
+if (_formKey.currentState!.validate()) { ... }
+
+
+3. controller
+
+TextEditingController permite ler/alterar o texto do TextField programaticamente e ouvir mudanças. Deve ser descartado em dispose() em StatefulWidget.
+
+4. validation
+
+Validadores retornam String? (mensagem) ou null se válido. São executados quando FormState.validate() é chamado.
+
+5. limites do Stateless
+
+StatelessWidget não guarda estado. Para formulários dinâmicos que mudam (seleção, texto editável, validação visual), use StatefulWidget ou gerenciadores de estado externos. Um StatelessWidget pode conter Form se o estado estiver elevado a um ancestor.
+
+
+// 6. Exemplo de formulário com validação (StatefulWidget obrigatório para controllers)
+class ExemploForm extends StatefulWidget {
+@override
+State<ExemploForm> createState() => _ExemploFormState();
+}
+class _ExemploFormState extends State<ExemploForm> {
+final _formKey = GlobalKey<FormState>();
+final _nomeCtrl = TextEditingController();
+@override void dispose() { _nomeCtrl.dispose(); super.dispose(); }
+@override
+Widget build(BuildContext context) {
+return Form(
+key: _formKey,
+child: Column(children: [
+TextFormField(controller: _nomeCtrl, validator: (v) => v==null||v.isEmpty? 'Obrigatório': null),
+ElevatedButton(onPressed: (){
+if(_formKey.currentState!.validate()){
+// salvar
+}
+}, child: Text('Salvar'))
+]),
+);
+}
+}
+
+
+
+## 2. simulado_bd/respostas_simulado_bd.md
+```markdown
+# Simulado 3 — Banco de Dados / SQLite (respostas)
+
+
+(Respostas resumidas e técnicas — use como justificativa no relatório.)
+
+
+## Modelagem
+- `estado(id INTEGER PK AUTOINC, nome TEXT NOT NULL, uf TEXT NOT NULL)`
+- `cidade(id INTEGER PK AUTOINC, nome TEXT NOT NULL, estado_id INTEGER NOT NULL, ativa INTEGER NOT NULL DEFAULT 1, FOREIGN KEY(estado_id) REFERENCES estado(id))`
+
+
+### 1. BOOLEAN -> INTEGER
+SQLite não tem booleano. Use 1/0. No DTO: `bool ativa = map['ativa']==1;` e `map['ativa'] = ativa?1:0;`.
+
+
+### 2. estado_id deve ser INTEGER
+Chave estrangeira referencia id do estado que é INTEGER. Mantém tipo consistente e indexação eficiente.
+
+
+### 3. id no toMap()
+Ao inserir com AUTOINCREMENT, `id` geralmente é omitido. Para update, inclua `id` para WHERE.
+
+
+### 4. Sem FOREIGN KEY
+Excluir estado não impedirá exclusão e deixará cidades órfãs; app deve proteger.
+
+
+### 5. Garantir exclusão segura sem FK
+Transações: apagar ou reassociar cidades antes de excluir estado.
+
+
+### 6. Conversão 1/0 para true/false
+No DTO (fromMap/toMap).
+
+
+### 7. Listas armazenadas em TEXT
+Serializar em JSON (`jsonEncode`/`jsonDecode`) no DTO.
+
+
+### 8. NOT NULL
+Obrigatoriedade de valores; inserir NULL gera DatabaseException.
+
+
+### Consultas e DAO
+- Use `db.query('cidade', where: 'ativa = ?', whereArgs:[1])` para filtrar ativas.
+- Para JOIN: `SELECT c.*, e.nome as estado_nome FROM cidade c JOIN estado e ON c.estado_id=e.id` e mapear `estado_nome`.
+
+
+### Conexão
+- Não use deleteDatabase em produção.
+- Use `onUpgrade` para alterar esquemas.
+- Singleton para conexão: evita múltiplas instâncias.
+- Não fechar após cada operação; abrir no app start e fechar no fim.
+
+
+### Erros comuns e tratamento
+- Use `try/on DatabaseException catch(e)` e trate constraints.
+- Use transações (`db.transaction`) para garantir atomicidade.
+
+
+### Integração UI
+- `setState` após await dos carregamentos.
+- Usar token/cancel para evitar condições de corrida ao carregar cidades.

@@ -1,0 +1,59 @@
+Simulado 2 — Formulário Stateless (respostas)
+
+
+## 1. BuildContext
+- `BuildContext` é o identificador que referencia a localização de um widget na árvore. Permite acessar temas, localizações, navegação e encontrar widgets ancestrais (via `Theme.of(context)` ou `Navigator.of(context)`).
+
+
+## 2. GlobalKey<FormState>
+- `GlobalKey<FormState>` permite acessar o estado do `Form` de fora do próprio `Form` (por exemplo para validar/submit). Exemplo de uso:
+
+
+```dart
+final _formKey = GlobalKey<FormState>();
+Form(
+key: _formKey,
+child: ...
+);
+// validar
+if (_formKey.currentState!.validate()) { ... }
+
+3. controller
+
+TextEditingController permite ler/alterar o texto do TextField programaticamente e ouvir mudanças. Deve ser descartado em dispose() em StatefulWidget.
+
+4. validation
+
+Validadores retornam String? (mensagem) ou null se válido. São executados quando FormState.validate() é chamado.
+
+5. limites do Stateless
+
+StatelessWidget não guarda estado. Para formulários dinâmicos que mudam (seleção, texto editável, validação visual), use StatefulWidget ou gerenciadores de estado externos. Um StatelessWidget pode conter Form se o estado estiver elevado a um ancestor.
+
+
+
+
+// 6 Exemplo de formulário com validação (StatefulWidget obrigatório para controllers)
+class ExemploForm extends StatefulWidget {
+@override
+State<ExemploForm> createState() => _ExemploFormState();
+}
+class _ExemploFormState extends State<ExemploForm> {
+final _formKey = GlobalKey<FormState>();
+final _nomeCtrl = TextEditingController();
+@override void dispose() { _nomeCtrl.dispose(); super.dispose(); }
+@override
+Widget build(BuildContext context) {
+return Form(
+key: _formKey,
+child: Column(children: [
+TextFormField(controller: _nomeCtrl, validator: (v) => v==null||v.isEmpty? 'Obrigatório': null),
+ElevatedButton(onPressed: (){
+if(_formKey.currentState!.validate()){
+// salvar
+}
+}, child: Text('Salvar'))
+]),
+);
+}
+}

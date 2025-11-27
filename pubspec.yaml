@@ -4,6 +4,27 @@ description: "A new Flutter project."
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
+
+name: app_crud
+description: CRUD Cidade-Estado com sqflite
+publish_to: 'none'
+version: 1.0.0+1
+environment:
+sdk: '>=2.18.0 <3.0.0'
+dependencies:
+flutter:
+sdk: flutter
+sqflite: ^2.2.8
+path: ^1.8.3
+path_provider: ^2.0.15
+
+
+dev_dependencies:
+flutter_test:
+sdk: flutter
+flutter:
+uses-material-design: true
+
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
 # followed by an optional build number separated by a +.

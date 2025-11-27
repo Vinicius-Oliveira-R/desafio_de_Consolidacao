@@ -34,3 +34,28 @@ class _AvatarEstadoPageState extends State<AvatarEstadoPage> {
     );
   }
 }
+
+// Exemplo de formulário com validação (StatefulWidget obrigatório para controllers)
+class ExemploForm extends StatefulWidget {
+@override
+State<ExemploForm> createState() => _ExemploFormState();
+}
+class _ExemploFormState extends State<ExemploForm> {
+final _formKey = GlobalKey<FormState>();
+final _nomeCtrl = TextEditingController();
+@override void dispose() { _nomeCtrl.dispose(); super.dispose(); }
+@override
+Widget build(BuildContext context) {
+return Form(
+key: _formKey,
+child: Column(children: [
+TextFormField(controller: _nomeCtrl, validator: (v) => v==null||v.isEmpty? 'Obrigatório': null),
+ElevatedButton(onPressed: (){
+if(_formKey.currentState!.validate()){
+// salvar
+}
+}, child: Text('Salvar'))
+]),
+);
+}
+}
